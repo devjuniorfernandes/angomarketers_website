@@ -120,3 +120,12 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     // Subscribers Listing
     Route::get('/subscribers', [App\Domain\Newsletter\Controllers\Admin\SubscriberController::class, 'index'])->name('subscribers.index');
 });
+
+Route::get('/setup-db', function () {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--force' => true, '--seed' => true]);
+        return 'Base de dados MySQL estruturada e dados iniciais inseridos com sucesso!';
+    } catch (\Exception $e) {
+        return 'Erro: ' . $e->getMessage();
+    }
+});
